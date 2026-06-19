@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kedai Kopi senja</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#f5f5f5;
+}
+
+.navbar{
+    background:rgba(0,0,0,0.8);
+    padding:15px 50px;
+    display:flex;
+    align-items:center;
+    position:fixed;
+    top:0;
+    width:100%;
+    z-index:1000;
+}
+
+.logo{
+    color:white;
+    font-size:28px;
+    font-weight:bold;
+}
+
+.menu{
+    position:absolute;
+    left:50%;
+    transform:translateX(-50%);
+}
+
+.menu a{
+    color:white;
+    text-decoration:none;
+    margin:0 15px;
+    font-size:17px;
+}
+
+.menu a:hover{
+    color:#d7a86e;
+}
+
+.icons{
+    margin-left:auto;
+}
+
+.icons a{
+    color:white;
+    font-size:20px;
+    margin-left:20px;
+    text-decoration:none;
+}
+
+.icons a:hover{
+    color:#d7a86e;
+}
+
+#jumlahKeranjang{
+    background:red;
+    color:white;
+    border-radius:50%;
+    padding:2px 6px;
+    font-size:12px;
+    display:inline-block;
+    transition:0.3s;
+}
+
+.hero{
+    min-height:100vh;
+    background:url('https://images.unsplash.com/photo-1509042239860-f550ce710b93');
+    background-size:cover;
+    background-position:center;
+    display:flex;
+    align-items:center;
+    padding-left:80px;
+    color:white;
+}
+
+.hero-text{
+    background:rgba(0,0,0,0.5);
+    padding:30px;
+    border-radius:10px;
+}
+
+.hero h1{
+    font-size:55px;
+}
+
+.hero span{
+    color:#d7a86e;
+}
+
+.hero p{
+    margin-top:15px;
+    font-size:18px;
+}
+
+.btn{
+    display:inline-block;
+    margin-top:20px;
+    padding:12px 25px;
+    background:#d7a86e;
+    color:white;
+    text-decoration:none;
+    border-radius:5px;
+}
+
+.section{
+    padding:60px;
+    text-align:center;
+}
+
+.card{
+    display:inline-block;
+    width:250px;
+    background:white;
+    padding:20px;
+    margin:10px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,0.2);
+}
+
+.card button{
+    margin-top:10px;
+    padding:8px 15px;
+    background:#d7a86e;
+    color:white;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+.footer{
+    background:#3e2723;
+    color:white;
+    text-align:center;
+    padding:20px;
+}
+
+
+.goyang{
+    animation:goyang 0.5s;
+}
+
+@keyframes goyang{
+    0%{transform:rotate(0deg);}
+    25%{transform:rotate(-20deg);}
+    50%{transform:rotate(20deg);}
+    75%{transform:rotate(-20deg);}
+    100%{transform:rotate(0deg);}
+}
+
+.besar{
+    animation:besar 0.6s ease;
+}
+
+@keyframes besar{
+    0%{transform:scale(1);}
+    50%{transform:scale(2);}
+    100%{transform:scale(1);}
+}
+.animasi{
+    opacity:0;
+    transform:translateY(50px);
+    transition:all 0.8s ease;
+}
+
+.animasi.muncul{
+    opacity:1;
+    transform:translateY(0);
+}
+@media (max-width:768px){
+
+    .navbar{
+        flex-direction:column;
+        padding:10px;
+        height:auto;
+    }
+
+    .logo{
+        font-size:20px;
+        text-align:center;
+        margin-bottom:10px;
+    }
+
+    .menu{
+        position:static;
+        transform:none;
+        display:flex;
+        flex-wrap:wrap;
+        justify-content:center;
+        gap:10px;
+        margin-bottom:10px;
+    }
+
+    .menu a{
+        margin:0;
+        font-size:15px;
+    }
+
+    .icons{
+        margin-left:0;
+    }
+
+    .hero{
+        padding:20px;
+        justify-content:center;
+        text-align:center;
+    }
+
+    .hero-text{
+        width:95%;
+        padding:20px;
+    }
+
+    .hero h1{
+        font-size:40px;
+    }
+
+    .section{
+        padding:40px 15px;
+    }
+
+    .card{
+        width:100%;
+        max-width:300px;
+    }
+
+    #searchMenu{
+        width:90% !important;
+    }
+}
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+
+    <div class="logo">☕ KEDAI KOPI SENJA </div>
+
+    <div class="menu">
+ <a href="dashboard.html">Home</a>
+<a href="tentang.html">Tentang</a>
+<a href="#menu">Menu</a>
+<a href="kontak.html">Kontak</a>
+<a href="index.html">Logout</a>
+</div>
+
+    <div class="icons">
+        <a href="#" onclick="bukaSearch()">
+            <i class="fas fa-search"></i>
+        </a>
+
+        <a href="#" onclick="lihatKeranjang()">
+    <i class="fas fa-shopping-cart" id="iconKeranjang"></i>
+    <span id="jumlahKeranjang">0</span>
+</a>
+    </div>
+
+</nav>
+
+<section class="hero" id="home">
+    <div class="hero-text">
+        <h1>Mari Nikmati <span>Kopi Terbaik</span></h1>
+        <p>Kopi pilihan dengan cita rasa yang khas dan berkualitas.</p>
+        <a href="#menu" class="btn">Pesan Sekarang</a>
+    </div>
+</section>
+
+<section class="section animasi" id="tentang">
+    <h2>Tentang Kami</h2>
+    <br>
+    <p>Kedai kopi menyediakan kopi dengan kualitas terbaik.</p>
+</section>
+
+<section class="section animasi" id="menu">
+    <h2>Menu Favorit</h2>
+    <br>
+
+    <input type="text"
+           id="searchMenu"
+           placeholder="Cari menu..."
+           onkeyup="cariMenu()"
+           style="padding:10px; width:300px; margin-bottom:20px;">
+
+    <br>
+
+    <div class="card menu-item">
+
+    <img src="https://images.unsplash.com/photo-1511920170033-f8396924c348"
+         width="200"
+         height="150">
+
+    <h3>Espresso</h3>
+    <p>Rp 15.000</p>
+
+    <button onclick="tambahKeranjang(
+'Espresso',
+15000,
+'https://images.unsplash.com/photo-1511920170033-f8396924c348'
+)">
+Tambah ke Keranjang
+</button>
+
+</div>
+
+    <div class="card menu-item">
+
+    <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085"
+         width="200"
+         height="150">
+
+    <h3>Cappuccino</h3>
+    <p>Rp 25.000</p>
+
+    <button onclick="tambahKeranjang(
+'Cappuccino',
+25000,
+'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085'
+)">
+Tambah ke Keranjang
+</button>
+
+</div>
+
+    <div class="card menu-item">
+
+    <img src="https://images.unsplash.com/photo-1461023058943-07fcbe16d735"
+         width="200"
+         height="150">
+
+    <h3>Latte</h3>
+    <p>Rp 28.000</p>
+
+   <button onclick="tambahKeranjang(
+'Latte',
+28000,
+'https://images.unsplash.com/photo-1461023058943-07fcbe16d735'
+)">
+Tambah ke Keranjang
+</button>
+
+</div>
+</section>
+
+<section id="kontak" class="animasi" style="background:#111; padding:60px 20px; color:white;">
+
+    <h2 style="text-align:center; margin-bottom:20px;">
+         Lokasi Kedai Kopi Senja
+    </h2>
+
+    <p style="text-align:center; margin-bottom:30px;">
+        Temukan lokasi kami melalui Google Maps
+    </p>
+
+    <div style="max-width:900px; margin:auto;">
+        <iframe
+            src="https://maps.google.com/maps?q=Rokan+Hulu+Riau&t=&z=13&ie=UTF8&iwloc=&output=embed"
+            width="100%"
+            height="450"
+            style="border:0; border-radius:10px;"
+            allowfullscreen=""
+            loading="lazy">
+        </iframe>
+    </div>
+
+</section>
+
+<div class="footer">
+    © KEDAI KOPI SENJA</div>
+
+<div id="popupKopi" style="
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.7);
+z-index:99999;
+">
+
+<div style="
+background:url('https://images.unsplash.com/photo-1509042239860-f550ce710b93');
+background-size:cover;
+background-position:center;
+width:350px;
+padding:30px;
+border-radius:15px;
+color:white;
+text-align:center;
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+">
+
+<h2>☕ Kedai Kopi Senja</h2>
+
+<p id="teksPopup">
+Apakah Anda ingin menambahkan produk ini ke keranjang?
+</p>
+
+<br><br>
+
+<button id="btnYa" style="
+padding:12px 30px;
+background:#8B4513;
+color:white;
+border:none;
+border-radius:8px;
+font-size:16px;
+cursor:pointer;
+margin-right:10px;
+">
+Ya
+</button>
+
+<button onclick="
+document.getElementById('popupKopi').style.display='none';
+" style="
+padding:12px 30px;
+background:#dc3545;
+color:white;
+border:none;
+border-radius:8px;
+font-size:16px;
+cursor:pointer;
+">
+Batal
+</button>
+
+</div>
+</div>
+
+
+<script>
+var keranjang = [];
+
+function tambahKeranjang(nama,harga,gambar){
+
+document.getElementById("popupKopi").style.display="block";
+
+document.getElementById("teksPopup").innerHTML =
+"Apakah Anda ingin menambahkan <b>" +
+nama +
+"</b> ke keranjang?";
+
+document.getElementById("btnYa").onclick = function(){
+
+let itemLama = keranjang.find(
+item => item.nama === nama
+);
+
+if(itemLama){
+
+itemLama.qty++;
+
+}else{
+
+keranjang.push({
+nama:nama,
+harga:harga,
+gambar:gambar,
+qty:1
+});
+
+}
+
+document.getElementById("jumlahKeranjang").innerText =
+keranjang.length;
+
+efekKeranjang();
+localStorage.setItem(
+    "keranjang",
+    JSON.stringify(keranjang)
+);
+
+
+document.getElementById("popupKopi").style.display="none";
+
+};
+
+}
+
+
+function hapusKeranjang(index){
+
+    keranjang.splice(index,1);
+    localStorage.setItem(
+    "keranjang",
+    JSON.stringify(keranjang)
+);
+
+    document.getElementById("jumlahKeranjang").innerText =
+    keranjang.length;
+
+    tampilKeranjang();
+}
+
+function tampilKeranjang(){
+
+    let list =
+    document.getElementById("listKeranjang");
+
+    if(!list) return;
+
+    list.innerHTML = "";
+
+    for(let i=0;i<keranjang.length;i++){
+
+        list.innerHTML +=
+        "<li>" +
+        keranjang[i] +
+        " <button onclick='hapusKeranjang(" + i + ")'>Hapus</button></li>";
+    }
+}
+
+function lihatKeranjang(){
+
+    let isi = `
+    <html>
+    <head>
+    <title>Keranjang Belanja</title>
+    <style>
+        body{
+            font-family:Arial;
+            padding:20px;
+        }
+
+        .item{
+            border:1px solid #ddd;
+            padding:10px;
+            margin-bottom:10px;
+            border-radius:10px;
+        }
+
+        img{
+            width:100px;
+            height:100px;
+            object-fit:cover;
+            border-radius:10px;
+        }
+
+        button{
+            background:red;
+            color:white;
+            border:none;
+            padding:8px 15px;
+            border-radius:5px;
+            cursor:pointer;
+        }
+    </style>
+    </head>
+    <body>
+
+    <h2>🛒 Keranjang Belanja</h2>
+    `;
+
+    keranjang.forEach((item,index)=>{
+
+        isi += `
+        <div class="item">
+           <img src="${item.gambar}">
+<h3>${item.nama}</h3>
+
+<p>Harga : Rp ${item.harga}</p>
+
+<p>Jumlah : ${item.qty}</p>
+
+<p>
+Subtotal :
+Rp ${item.harga * item.qty}
+</p>
+<button onclick="
+window.opener.keranjang[${index}].qty--;
+if(window.opener.keranjang[${index}].qty<=0){
+window.opener.keranjang.splice(${index},1);
+}
+window.opener.lihatKeranjang();
+">
+➖
+</button>
+<b>${item.qty}</b>
+
+<button onclick="
+window.opener.keranjang[${index}].qty++;
+window.opener.lihatKeranjang();
+">
+➕
+</button>
+
+            <button onclick="
+    window.opener.keranjang.splice(${index},1);
+    window.opener.document.getElementById('jumlahKeranjang').innerText =
+    window.opener.keranjang.length;
+    window.opener.lihatKeranjang();
+">
+    Hapus
+</button>
+
+        </div>
+        `;
+    });
+
+    isi += `
+
+<hr>
+
+<button onclick="
+window.opener.localStorage.setItem(
+'keranjang',
+JSON.stringify(window.opener.keranjang)
+);
+window.open('checkout.html','_self');
+">
+Checkout
+</button>
+</body>
+</html>
+`;
+localStorage.setItem(
+    "keranjang",
+    JSON.stringify(keranjang)
+);
+
+window.location.href = "keranjang.html";
+}
+
+function bukaSearch(){
+    document.getElementById("searchMenu").focus();
+}
+
+function cariMenu(){
+    let input =
+    document.getElementById("searchMenu").value.toLowerCase();
+
+    let menu =
+    document.getElementsByClassName("menu-item");
+
+    for(let i=0;i<menu.length;i++){
+
+        let nama =
+        menu[i].getElementsByTagName("h3")[0]
+        .innerText.toLowerCase();
+
+        if(nama.includes(input)){
+            menu[i].style.display="inline-block";
+        }else{
+            menu[i].style.display="none";
+        }
+    }
+}
+const elements = document.querySelectorAll('.animasi');
+
+function cekScroll(){
+    elements.forEach(el => {
+        const posisi = el.getBoundingClientRect().top;
+
+        if(posisi < window.innerHeight - 100){
+            el.classList.add('muncul');
+        }
+    });
+}
+
+window.addEventListener('scroll', cekScroll);
+cekScroll();
+
+
+
+
+function efekKeranjang(){
+
+    let icon = document.getElementById("iconKeranjang");
+    let jumlah = document.getElementById("jumlahKeranjang");
+
+    icon.classList.add("goyang");
+    jumlah.classList.add("besar");
+
+    setTimeout(function(){
+        icon.classList.remove("goyang");
+        jumlah.classList.remove("besar");
+    },500);
+}
+</script>
+
+</body>
+</html>

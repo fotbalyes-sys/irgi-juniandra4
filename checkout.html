@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checkout Kedai Kopi Senja</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f5f5f5;
+    padding:20px;
+}
+
+.container{
+    max-width:600px;
+    margin:auto;
+    background:white;
+    padding:20px;
+    border-radius:15px;
+    box-shadow:0 0 10px rgba(0,0,0,0.2);
+}
+
+h2{
+    text-align:center;
+    color:#6f4e37;
+}
+
+input, textarea{
+    width:100%;
+    padding:12px;
+    margin:10px 0;
+    border:1px solid #ccc;
+    border-radius:8px;
+    box-sizing:border-box;
+}
+
+.logo-bayar{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:15px;
+    margin:20px 0;
+}
+
+.metode{
+    border:2px solid #ddd;
+    border-radius:10px;
+    padding:15px;
+    text-align:center;
+    cursor:pointer;
+    position:relative;
+}
+
+.metode.active{
+    border:3px solid green;
+}
+
+.metode.active::after{
+    content:"✓";
+    position:absolute;
+    top:5px;
+    right:5px;
+    background:green;
+    color:white;
+    width:25px;
+    height:25px;
+    border-radius:50%;
+    line-height:25px;
+}
+
+button{
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:8px;
+    color:white;
+    cursor:pointer;
+    font-size:16px;
+}
+
+.checkout{
+    background:#6f4e37;
+}
+
+.batal{
+    background:red;
+    margin-top:10px;
+}
+
+#totalPesanan{
+    text-align:center;
+    margin:20px 0;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<h2>☕ Checkout Kedai Kopi Senja</h2>
+
+<input type="text" id="nama" placeholder="Nama Lengkap">
+
+<input type="text" id="hp" placeholder="Nomor WhatsApp">
+
+<textarea id="alamat" placeholder="Alamat Lengkap"></textarea>
+
+<h3>Pilih Metode Pembayaran</h3>
+
+<div class="logo-bayar">
+
+<div class="metode" onclick="pilihBayar('DANA',this)">
+<p><b>DANA</b></p>
+</div>
+
+<div class="metode" onclick="pilihBayar('GoPay',this)">
+<p><b>GoPay</b></p>
+</div>
+
+<div class="metode" onclick="pilihBayar('QRIS',this)">
+<p><b>QRIS</b></p>
+</div>
+
+<div class="metode" onclick="pilihBayar('Transfer Bank',this)">
+<p><b>Transfer Bank</b></p>
+</div>
+
+</div>
+
+<input type="hidden" id="metodeBayar">
+
+<h3 id="totalPesanan">
+Total : Rp 0
+</h3>
+
+<button class="checkout" onclick="checkout()">
+Checkout Sekarang
+</button>
+
+<button class="batal" onclick="window.location.href='index.html'">
+Batal
+</button>
+
+</div>
+
+<script>
+
+let total = 0;
+
+window.onload = function(){
+
+    let keranjang =
+    JSON.parse(localStorage.getItem("keranjang")) || [];
+
+    total = 0;
+
+    keranjang.forEach(function(item){
+
+        let qty = item.qty || 1;
+
+        total += item.harga * qty;
+
+    });
+
+    document.getElementById("totalPesanan").innerHTML =
+    "Total : Rp " + total.toLocaleString("id-ID");
+
+}
+
+function pilihBayar(metode,el){
+
+    document.getElementById("metodeBayar").value = metode;
+
+    document.querySelectorAll(".metode").forEach(function(item){
+        item.classList.remove("active");
+    });
+
+    el.classList.add("active");
+}
+
+function checkout(){
+
+    let nama = document.getElementById("nama").value;
+    let hp = document.getElementById("hp").value;
+    let alamat = document.getElementById("alamat").value;
+    let metode = document.getElementById("metodeBayar").value;
+
+    if(nama==""){
+        alert("Nama wajib diisi");
+        return;
+    }
+
+    if(hp==""){
+        alert("Nomor WhatsApp wajib diisi");
+        return;
+    }
+
+    if(alamat==""){
+        alert("Alamat wajib diisi");
+        return;
+    }
+
+    if(metode==""){
+        alert("Pilih metode pembayaran");
+        return;
+    }
+
+    if(total <= 0){
+        alert("Keranjang masih kosong");
+        return;
+    }
+
+    let pesan =
+    "☕ PESANAN BARU KEDAI KOPI SENJA\n\n"+
+    "Nama : "+nama+"\n"+
+    "No HP : "+hp+"\n"+
+    "Alamat : "+alamat+"\n"+
+    "Pembayaran : "+metode+"\n"+
+    "Total : Rp "+total.toLocaleString("id-ID");
+
+    window.open(
+    "https://wa.me/6282268866764?text="+encodeURIComponent(pesan),
+    "_blank"
+    );
+
+}
+
+</script>
+
+</body>
+</html>

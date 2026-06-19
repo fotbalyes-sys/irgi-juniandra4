@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login Kedai Kopi Senja</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+    background:url('https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1200') center/cover;
+}
+
+.container{
+    width:350px;
+    background:rgba(0,0,0,0.7);
+    padding:30px;
+    border-radius:15px;
+    color:white;
+    text-align:center;
+}
+
+h2{
+    margin-bottom:20px;
+}
+
+input{
+    width:100%;
+    padding:12px;
+    margin:10px 0;
+    border:none;
+    border-radius:8px;
+}
+
+button{
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:8px;
+    background:#8B4513;
+    color:white;
+    cursor:pointer;
+    font-size:16px;
+}
+
+button:hover{
+    background:#6f3410;
+}
+
+.link{
+    margin-top:15px;
+}
+
+.link a{
+    color:#ffc107;
+    cursor:pointer;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- LOGIN -->
+    <div id="loginForm">
+        <h2>☕ Login Kedai Kopi</h2>
+
+        <input type="text" id="loginUser" placeholder="Username">
+        <input type="password" id="loginPass" placeholder="Password">
+
+        <button onclick="login()">Login</button>
+
+        <div class="link">
+            Belum punya akun?
+            <a onclick="showRegister()">Registrasi</a>
+        </div>
+    </div>
+
+    <!-- REGISTER -->
+    <div id="registerForm" style="display:none;">
+        <h2>📝 Registrasi</h2>
+
+        <input type="text" id="regUser" placeholder="Username">
+        <input type="password" id="regPass" placeholder="Password">
+
+        <button onclick="register()">Daftar</button>
+
+        <div class="link">
+            Sudah punya akun?
+            <a onclick="showLogin()">Login</a>
+        </div>
+    </div>
+
+</div>
+
+<script>
+
+function showRegister(){
+    document.getElementById("loginForm").style.display="none";
+    document.getElementById("registerForm").style.display="block";
+}
+
+function showLogin(){
+    document.getElementById("registerForm").style.display="none";
+    document.getElementById("loginForm").style.display="block";
+}
+
+function register(){
+
+    let user = document.getElementById("regUser").value;
+    let pass = document.getElementById("regPass").value;
+
+    if(user==="" || pass===""){
+        alert("Lengkapi data!");
+        return;
+    }
+
+    localStorage.setItem("username", user);
+    localStorage.setItem("password", pass);
+
+    alert("Registrasi berhasil!");
+
+    showLogin();
+}
+
+function login(){
+
+    let user = document.getElementById("loginUser").value;
+    let pass = document.getElementById("loginPass").value;
+
+    let simpanUser = localStorage.getItem("username");
+    let simpanPass = localStorage.getItem("password");
+
+    if(user === simpanUser && pass === simpanPass){
+
+        alert("Login berhasil!");
+
+        window.location.href = "dashboard.html";
+
+    }else{
+
+        alert("Username atau Password salah!");
+    }
+}
+
+</script>
+
+</body>
+</html>
